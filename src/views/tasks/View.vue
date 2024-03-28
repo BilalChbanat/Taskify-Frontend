@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-between">
                     <button wire:click="create()"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create New
-                        Post</button>
+                        Task</button>
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         Manage My tasks
                     </h2>
