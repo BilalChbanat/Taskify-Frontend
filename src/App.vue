@@ -1,5 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from './stores/auth';
+
+const authStore = useAuthStore();
+const handleLogout = () => authStore.handleLogout();
 </script>
 
 <template>
@@ -10,10 +14,18 @@ import { RouterLink, RouterView } from 'vue-router'
             </b></span></span>
       </RouterLink>
       <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-        <RouterLink to="/about" class="mr-5 hover:text-purple-700">About Us</RouterLink>
-        <RouterLink to="/tasks" class="mr-5 hover:text-purple-700">My Tasks</RouterLink>
-        <RouterLink to="/login" class="mr-5 hover:text-purple-700">Login</RouterLink>
-        <RouterLink to="/register" class="mr-5 hover:text-purple-700">Register</RouterLink>
+        <RouterLink to="/" class="mr-5 hover:text-purple-700">Home</RouterLink>
+
+        <template v-if="!authStore.user">
+          <RouterLink to="/login" class="mr-5 hover:text-purple-700">Login</RouterLink>
+          <RouterLink to="/register" class="mr-5 hover:text-purple-700">Register</RouterLink>
+        </template>
+        <template v-else-if="authStore.user">
+          <RouterLink to="/tasks" class="mr-5 hover:text-purple-700">My Tasks</RouterLink>
+          <button @click="handleLogout" class="mr-5 px-2 py-1 rounded-md text-white bg-sky-400 hover:bg-sky-500">Log out
+          </button>
+        </template>
+
       </nav>
     </div>
   </header>
