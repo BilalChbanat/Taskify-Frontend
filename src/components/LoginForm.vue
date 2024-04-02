@@ -11,7 +11,7 @@
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
             </div>
             <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-                <form @submit.prevent="handlelogin">
+                <form @submit.prevent="authStore.handlelogin(form)">
                     <div class="max-w-md mx-auto">
                         <div>
                             <h1 class="text-2xl font-semibold">Login</h1>
@@ -81,25 +81,12 @@
 <script>
 import axios from 'axios';
 import {ref} from 'vue';
-import {useRouter} from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
-const router = useRouter();
-
+const authStore = useAuthStore();
 const form = ref({
     email: '',
     password: '',
 })
 
-const getToken = async () => {
-    await axios.get('/sanctum/csrf-cookie');
-}
-
-const handlelogin = async () => {
-    await getToken();
-    await axios.post('http://127.0.0.1:8000/api/login', {
-        email: form.value.email,
-        password: form.value.password,
-    });
-    router.push('/')
-}
 </script>
