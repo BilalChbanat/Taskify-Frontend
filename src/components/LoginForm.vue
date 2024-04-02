@@ -11,7 +11,7 @@
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
             </div>
             <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-                <form @submit.prevent="login">
+                <form @submit.prevent="handlelogin">
                     <div class="max-w-md mx-auto">
                         <div>
                             <h1 class="text-2xl font-semibold">Login</h1>
@@ -80,32 +80,26 @@
 
 <script>
 import axios from 'axios';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
-export default {
-    data() {
-        return {
-            email: '',
-            password: ''
-        };
-    },
-    methods: {
-        async login() {
-            try {
-                const response = await axios.post('http://127.0.0.1:8000/api/login', {
-                    email: this.email,
-                    password: this.password
-                });
+const router = useRouter();
 
-                localStorage.setItem('token', response.data.access_token);
+const form = ref({
+    email: '',
+    password: '',
+})
 
-                axios.get('http://127.0.0.1:8000/api/V1/tasks').then(res => {
-                    console.log(res);
-                });
+const getToken = async () => {
+    await axios.get('/sanctum/csrf-cookie');
+}
 
-            } catch (error) {
-                console.error('Login failed:', error);
-            }
-        }
-    }
-};
+const handlelogin = async () => {
+    await getToken();
+    await axios.post('http://127.0.0.1:8000/api/login', {
+        email: form.value.email,
+        password: form.value.password,
+    });
+    router.push('/')
+}
 </script>
