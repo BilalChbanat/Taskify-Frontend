@@ -26,5 +26,17 @@ export const useAuthStore = defineStore("auth", {
       });
       this.router.push("/");
     },
+
+    async handleRegister(data) {
+      await this.getToken();
+      await axios.post("http://127.0.0.1:8000/api/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+      });
+
+      this.router.push("/");
+    },
   },
 });

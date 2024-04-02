@@ -5,7 +5,7 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                     Create an account
                 </h1>
-                <form class="space-y-4 md:space-y-6" @submit.prevent="handleRegister">
+                <form class="space-y-4 md:space-y-6" @submit.prevent="authStore.handleRegister(form)">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Your full name</label>
                         <input type="text" id="name" v-model="form.name"
@@ -46,12 +46,11 @@
 
 <script>
 import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 export default {
     setup() {
-        const router = useRouter();
+        const authStore = useAuthStore();
         const form = ref({
             name: '',
             email: '',
@@ -59,20 +58,9 @@ export default {
             password_confirmation: '',
         });
 
-        const handleRegister = async () => {
-            await axios.post('http://127.0.0.1:8000/api/register', {
-                name: form.value.name,
-                email: form.value.email,
-                password: form.value.password,
-                password_confirmation: form.value.password_confirmation
-            });
-
-            router.push('/');
-        };
-
         return {
             form,
-            handleRegister
+            authStore 
         };
     }
 };
