@@ -28,7 +28,7 @@
                                 <td class="border px-4 py-2">{{ task.description }}</td>
                                 <td class="border px-4 py-2">{{ task.status }}</td>
                                 <td class="border px-4 py-2">
-                                    <RouterLink to="/"
+                                    <RouterLink :to="{ path: '/tasks/' +task.id+'/edit'}"
                                         class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                                         Edit
                                     </RouterLink>

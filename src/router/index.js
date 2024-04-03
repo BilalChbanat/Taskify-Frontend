@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import tasksView from "../views/tasks/View.vue";
 import taskCreate from "../views/tasks/Create.vue";
+import taskedit from "../views/tasks/edit.vue";
 
 import LoginView from "../views/Auth/LoginView.vue";
 import RegisterView from "../views/Auth/RegisterView.vue";
@@ -29,7 +30,12 @@ const router = createRouter({
       name: "taskCreate",
       component: taskCreate,
     },
-    // Add routes for login and register
+    {
+      path: "/tasks/:id/edit",
+      name: "taskedit",
+      component: taskedit,
+    },
+
     {
       path: "/login",
       name: "login",
