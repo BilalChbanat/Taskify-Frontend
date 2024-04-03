@@ -3,9 +3,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex items-center justify-between">
-                    <button @click="create()"
+                    <RouterLink to="tasks/create"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create New
-                        Task</button>
+                        Task</RouterLink>
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         Manage My tasks
                     </h2>
