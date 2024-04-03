@@ -32,7 +32,7 @@
                                         class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                                         Edit
                                     </RouterLink>
-                                    <button type="button"
+                                    <button type="button" @click="deleteTask(task.id)"
                                         class="bg-red-400 ml-2 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
                                         Delete
                                     </button>
@@ -76,6 +76,20 @@ export default {
 
             } catch (error) {
                 console.error('Error fetching tasks:', error);
+            }
+        },
+
+        deleteTask(taskId){
+            if (confirm('Are you sure you want to delete this task ?')){
+                axios.delete(`http://127.0.0.1:8000/api/V1/tasks/${taskId}`).then(res => {
+                    alert(res.data.message);
+                }).catch(function (error){
+                    if(error.response){
+                        if(error.response.status == 404){
+                            alert(error.response.data.message);
+                        }
+                    }
+                });
             }
         }
     }
