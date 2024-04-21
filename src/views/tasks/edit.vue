@@ -32,7 +32,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
@@ -73,17 +72,22 @@ export default {
                 console.log(res.data);
                 alert(res.data.message);
                 this.errors = {}; // Clear any previous errors
+                // Update the local task data after successful update
+                this.$emit('updateTask', res.data.task);
+                this.$router.push('/tasks'); // Redirect using this.$router
             }).catch(error => {
                 if (error.response && error.response.status === 422) {
                     this.errors = error.response.data.errors;
+                    this.$router.push('/tasks'); // Redirect using this.$router even if there's an error
                 } else if (error.response && error.response.status === 404) {
                     alert(error.response.data.message);
+                    this.$router.push('/tasks'); // Redirect using this.$router even if there's an error
                 } else {
                     console.error('Update failed:', error.message);
+                    this.$router.push('/tasks'); // Redirect using this.$router even if there's an error
                 }
             });
         }
-        
     }
 }
 </script>

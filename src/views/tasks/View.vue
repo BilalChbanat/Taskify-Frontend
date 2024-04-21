@@ -28,7 +28,7 @@
                                 <td class="border px-4 py-2">{{ task.description }}</td>
                                 <td class="border px-4 py-2">{{ task.status }}</td>
                                 <td class="border px-4 py-2">
-                                    <RouterLink :to="{ path: '/tasks/' +task.id+'/edit'}"
+                                    <RouterLink :to="{ path: '/tasks/' + task.id + '/edit' }"
                                         class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                                         Edit
                                     </RouterLink>
@@ -50,6 +50,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 export default {
@@ -79,17 +80,20 @@ export default {
             }
         },
 
-        deleteTask(taskId){
-            if (confirm('Are you sure you want to delete this task ?')){
-                axios.delete(`http://127.0.0.1:8000/api/V1/tasks/${taskId}`).then(res => {
-                    alert(res.data.message);
-                }).catch(function (error){
-                    if(error.response){
-                        if(error.response.status == 404){
-                            alert(error.response.data.message);
-                        }
+        async deleteTask(taskId) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                try {
+                    const response = await axios.delete(`http://127.0.0.1:8000/api/V1/tasks/${taskId}`);
+                    alert(response.data.message);
+                    // Remove the deleted task from the local tasks array
+                    this.tasks = this.tasks.filter(task => task.id !== taskId);
+                } catch (error) {
+                    if (error.response && error.response.status === 404) {
+                        alert(error.response.data.message);
+                    } else {
+                        console.error('Error deleting task:', error);
                     }
-                });
+                }
             }
         }
     }

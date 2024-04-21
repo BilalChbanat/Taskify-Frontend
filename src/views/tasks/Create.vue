@@ -29,10 +29,12 @@
         </div>
     </div>
 </template>
-
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const model = ref({
     task: {
@@ -44,17 +46,24 @@ const model = ref({
 
 const saveTask = async () => {
     try {
-        console.log(model.value.task.status); // Access status from model.value.task
+        console.log(model.value.task.status);
         const response = await axios.post('http://127.0.0.1:8000/api/V1/tasks', model.value.task);
         if (response.data.status == 200) {
-            fetch_data();
-            console.log(response.data.message); // Log success message instead of displaying Swal alert
+            model.value.task.name = '';
+            model.value.task.description = '';
+            model.value.task.status = '';
+
+            console.log(response.data.message);
+
+            router.push('/tasks');
         }
         else {
-            console.error(response.data.message); // Log error message instead of displaying Swal alert
+            console.error(response.data.message);
+            router.push('/tasks');
         }
     } catch (error) {
-        console.error(error); // Log error instead of displaying Swal alert
+        console.error(error);
+        router.push('/tasks');
     }
 }
 </script>
