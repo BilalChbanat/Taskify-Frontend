@@ -50,7 +50,7 @@
         </div>
     </div>
 </template>
-
+<!-- 
 <script>
 import axios from 'axios';
 export default {
@@ -95,6 +95,67 @@ export default {
                     }
                 }
             }
+        }
+    }
+}
+</script> -->
+
+<script>
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+export default {
+    name: 'tasks',
+    data() {
+        return {
+            tasks: []
+        }
+    },
+    mounted() {
+        this.checkTokenAndFetchTasks();
+    },
+    methods: {
+        async checkTokenAndFetchTasks() {
+            try {
+                const accessToken = localStorage.getItem('token');
+                if (!accessToken) {
+                    // If token doesn't exist, redirect to login
+                    this.redirectToLogin();
+                    return;
+                }
+
+                // Token exists, fetch tasks
+                const response = await axios.get('http://127.0.0.1:8000/api/V1/tasks', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                this.tasks = response.data.data;
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        },
+
+        redirectToLogin() {
+            const router = useRouter();
+            router.push('/login');
+        },
+
+        async deleteTask(taskId) {
+        if (confirm('Are you sure you want to delete this task?')) {
+        try {
+        const response = await axios.delete(`http://127.0.0.1:8000/api/V1/tasks/${taskId}`);
+        alert(response.data.message);
+        // Remove the deleted task from the local tasks array
+        this.tasks = this.tasks.filter(task => task.id !== taskId);
+        } catch (error) {
+        if (error.response && error.response.status === 404) {
+        alert(error.response.data.message);
+        } else {
+        console.error('Error deleting task:', error);
+        }
+        }
+        }
         }
     }
 }
