@@ -7,6 +7,15 @@ import taskedit from "../views/tasks/edit.vue";
 import LoginView from "../views/Auth/LoginView.vue";
 import RegisterView from "../views/Auth/RegisterView.vue";
 
+function islogin() {
+  if (!localStorage.getItem("token")) {
+    return true;
+  } else {
+    return "/tasks";
+  }
+
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -40,11 +49,13 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      beforeEnter: [islogin],
     },
     {
       path: "/register",
       name: "register",
       component: RegisterView,
+      beforeEnter: [islogin],
     },
   ],
 });
